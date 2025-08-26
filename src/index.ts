@@ -52,6 +52,81 @@ const sketch: Sketch<"webgl2"> = async ({
   const svg = document.getElementById("image") as HTMLInputElement;
   const exportButton = document.getElementById("saveImage") as HTMLInputElement;
 
+  const aspectRatioSelect = document.getElementById("aspect-ratio") as HTMLInputElement;
+  const motto = (svg as any).querySelector("svg");
+  const canvasContainerFO = (svg as any).querySelector("foreignObject:nth-of-type(1)") as SVGForeignObjectElement;
+  const filenameContainerFO = (svg as any).querySelector("foreignObject:nth-of-type(2)") as SVGForeignObjectElement;
+  const eventName = (svg as any).querySelector(".event-name") as SVGTextElement;
+
+  aspectRatioSelect.addEventListener("change", (event) => {
+    const aspectRatio = (event.target as HTMLInputElement).value;
+
+    switch (aspectRatio) {
+      case "square":
+        sloganToggle.disabled = true;
+        svg.setAttribute("viewBox", "0 0 150 150");
+        motto.style.display = 'none'
+        canvasContainerFO.setAttribute("x", "10");
+        canvasContainerFO.setAttribute("y", "0");
+        canvasContainerFO.setAttribute("width", "130");
+        canvasContainerFO.setAttribute("height", "130");
+        filenameContainerFO.setAttribute("x", "0");
+        filenameContainerFO.setAttribute("y", "90");
+        filenameContainerFO.setAttribute("width", "150");
+        eventName.setAttribute("x", "75");
+        eventName.setAttribute("y", "145");
+        break;
+      case "threebyFour":
+        sloganToggle.disabled = false;
+        svg.setAttribute("viewBox", "0 0 150 200");
+        motto.style.display = sloganToggle.checked ? 'block' : 'none'
+        motto.setAttribute("x", "23");
+        motto.setAttribute("y", "20");
+        canvasContainerFO.setAttribute("x", "0");
+        canvasContainerFO.setAttribute("y", "35");
+        canvasContainerFO.setAttribute("width", "150");
+        canvasContainerFO.setAttribute("height", "250");
+        filenameContainerFO.setAttribute("x", "5");
+        filenameContainerFO.setAttribute("y", "140");
+        filenameContainerFO.setAttribute("width", "140");
+        eventName.setAttribute("x", "75");
+        eventName.setAttribute("y", "190");
+        break;
+      case "din":
+        sloganToggle.disabled = false;
+        svg.setAttribute("viewBox", "0 0 150 212");
+        motto.style.display = sloganToggle.checked ? 'block' : 'none'
+        motto.setAttribute("x", "23");
+        motto.setAttribute("y", "20");
+        canvasContainerFO.setAttribute("x", "0");
+        canvasContainerFO.setAttribute("y", "45");
+        canvasContainerFO.setAttribute("width", "150");
+        canvasContainerFO.setAttribute("height", "250");
+        filenameContainerFO.setAttribute("x", "5");
+        filenameContainerFO.setAttribute("y", "150");
+        filenameContainerFO.setAttribute("width", "140");
+        eventName.setAttribute("x", "75");
+        eventName.setAttribute("y", "202");
+        break;
+      case "widescreen":
+        sloganToggle.disabled = false;
+        svg.setAttribute("viewBox", "0 0 250 150");
+        motto.style.display = sloganToggle.checked ? 'block' : 'none'
+        motto.setAttribute("x", "10");
+        motto.setAttribute("y", "10");
+        canvasContainerFO.setAttribute("x", "125");
+        canvasContainerFO.setAttribute("y", "10");
+        canvasContainerFO.setAttribute("width", "125");
+        canvasContainerFO.setAttribute("height", "125");
+        filenameContainerFO.setAttribute("x", "125");
+        filenameContainerFO.setAttribute("y", "100");
+        filenameContainerFO.setAttribute("width", "125");
+        eventName.setAttribute("x", "62.5");
+        eventName.setAttribute("y", "140");
+        break;
+    }
+  });
+
   filenameDisplay.innerHTML = filenameInput.value
 
   uploadInput.addEventListener("change", (event) => {
@@ -80,9 +155,9 @@ const sketch: Sketch<"webgl2"> = async ({
 
   sloganToggle.addEventListener("change", (event) => {
     if(event.target.checked) {
-      slogan.style.display = "block"
+      motto.style.display = "block"
     } else {
-      slogan.style.display = "none"
+      motto.style.display = "none"
     }
   })
 
