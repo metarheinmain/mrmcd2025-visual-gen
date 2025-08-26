@@ -54,8 +54,6 @@ const sketch: Sketch<"webgl2"> = async ({
 
   filenameDisplay.innerHTML = filenameInput.value
 
-  const imageContainer = document.getElementsByClassName("image")[0] as HTMLDivElement;
-
   uploadInput.addEventListener("change", (event) => {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
@@ -74,7 +72,8 @@ const sketch: Sketch<"webgl2"> = async ({
     }
   });
 
-  filenameInput.addEventListener("input", () => {
+  filenameInput.addEventListener("keyup", (event) => {
+    if (event.key === " ") filenameInput.value += " "
     filenameDisplay.innerHTML = filenameInput.value
   })
 
@@ -114,8 +113,15 @@ const sketch: Sketch<"webgl2"> = async ({
 
   exportButton.addEventListener("click", async () => {
     exportButton.disabled = true;
+    const canvasContainer = document.querySelector(".canvasContainer") as HTMLCanvasElement
+    const canvas = document.querySelector(".canvasContainer canvas") as HTMLCanvasElement
+    const tempImage = canvas.toDataURL("image/png")
+    canvasContainer.style.background = `url('${tempImage}') center`
+    canvasContainer.style.backgroundSize = "contain"
     const blob = await snapdom.toCanvas(svg, { embedFonts: true, width: 2500 });
     saveAs(blob.toDataURL("image/png"), `mrmcd_poster_${(new Date()).toLocaleString()}`)
+    canvasContainer.style.background = `none`
+    // canvasContainer.style.display = "block"
     exportButton.disabled = false;
   })
 
