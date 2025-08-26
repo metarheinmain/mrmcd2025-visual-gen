@@ -15,6 +15,8 @@ import {saveAs} from "file-saver"
 import baseVert from "./shaders/base.vert";
 import baseFrag from "./shaders/base.frag";
 import { snapdom } from "@zumer/snapdom";
+import Croppie from "croppie"
+import 'croppie/croppie.css'
 
 const sketch: Sketch<"webgl2"> = async ({
   wrap,
@@ -43,7 +45,7 @@ const sketch: Sketch<"webgl2"> = async ({
   const cropModal = document.getElementById("crop-modal") as HTMLDivElement;
   const cropImage = document.getElementById("crop-image") as HTMLImageElement;
   const cropButton = document.getElementById("crop-button") as HTMLButtonElement;
-  let cropper: any;
+  let cropper: Croppie;
   const filenameInput = document.getElementById("filename") as HTMLInputElement;
   const filenameDisplay = document.getElementsByClassName("filename")[0] as HTMLDivElement;
   const backgroundSelect = document.getElementById("background") as HTMLInputElement;
@@ -130,16 +132,20 @@ const sketch: Sketch<"webgl2"> = async ({
   filenameDisplay.innerHTML = filenameInput.value
 
   uploadInput.addEventListener("change", (event) => {
-    const file = (event.target as HTMLInputElement).files?.[0];
+    const file = uploadInput.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
         if (e.target?.result) {
           cropImage.src = e.target.result as string;
           cropModal.style.display = "flex";
-          cropper = new Cropper(cropImage, {
-            aspectRatio: 1,
-            viewMode: 1,
+          cropper = new Croppie(cropImage, {
+            viewport: {
+              width: 500,
+              height: 500,
+              type: "square"
+            },
+            enforceBoundary: true,
           });
         }
       };
@@ -154,7 +160,7 @@ const sketch: Sketch<"webgl2"> = async ({
 
 
   sloganToggle.addEventListener("change", (event) => {
-    if(event.target.checked) {
+    if(sloganToggle.checked) {
       motto.style.display = "block"
     } else {
       motto.style.display = "none"
@@ -162,17 +168,17 @@ const sketch: Sketch<"webgl2"> = async ({
   })
 
   backgroundSelect.addEventListener("change", (event) => {
-    if(event.target.value === "white") {
+    if(backgroundSelect.value === "white") {
       svg.style.setProperty("--image-bg", "#fff")
       svg.style.setProperty("--text-color", "#000")
-    } else if(event.target.value === "black") {
+    } else if(backgroundSelect.value === "black") {
       svg.style.setProperty("--image-bg", "#000")
       svg.style.setProperty("--text-color", "#fff")
     }
   })
 
-  cropButton.addEventListener("click", () => {
-    const croppedCanvas = cropper.getCroppedCanvas();
+  cropButton.addEventListener("click", async () => {
+    const croppedCanvas = await cropper.result({ type: "rawcanvas", size: "original" });
     const image = croppedCanvas.toDataURL();
     svg.style.setProperty("--image", `url('${image}'`)
     const newTexture = new TextureLoader().load(image, (texture) => {
