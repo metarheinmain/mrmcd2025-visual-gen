@@ -16,8 +16,8 @@ export default defineConfig({
     assetsDir: ".",
     rollupOptions: {
       input: {
-        main: "index.html",
-        konfigurator: "konfigurator/index.html"
+        main: "./index.html",
+        konfigurator: "./konfigurator/index.html"
       }
     },
   },
