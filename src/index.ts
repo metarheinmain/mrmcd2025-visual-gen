@@ -227,11 +227,9 @@ const sketch: Sketch<"webgl2"> = async ({
     const finalDimensions =
       dimensions[
         (aspectRatioSelect.querySelector("[checked]") as HTMLInputElement)
-          .value ?? "din"
+          .value ?? "threeByFour"
       ];
-    console.log(svg);
-
-    const snapdomCanvas = await snapdom.download(svg, {
+    await snapdom.download(svg, {
       scale: finalDimensions.width / svg.getBoundingClientRect().width,
       embedFonts: true,
       reset: "hard",
