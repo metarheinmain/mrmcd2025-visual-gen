@@ -1,6 +1,6 @@
 precision highp float;
 
-#include "../../lygia/color/blend/hardLight.glsl"
+#include "hardLight.glsl"
 
 uniform vec2 resolution;
 uniform float time;
