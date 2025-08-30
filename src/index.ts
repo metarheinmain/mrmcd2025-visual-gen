@@ -78,7 +78,7 @@ const sketch: Sketch<"webgl2"> = async ({
         eventName.setAttribute("x", "75");
         eventName.setAttribute("y", "145");
         break;
-      case "threebyFour":
+      case "threeByFour":
         sloganToggle.disabled = false;
         svg.setAttribute("viewBox", "0 0 150 200");
         motto.style.display = sloganToggle.checked ? 'block' : 'none'
@@ -168,10 +168,12 @@ const sketch: Sketch<"webgl2"> = async ({
   })
 
   backgroundSelect.addEventListener("change", (event) => {
-    if(backgroundSelect.value === "white") {
+    const color = (event.target as HTMLInputElement).value;
+    
+    if(color === "white") {
       svg.style.setProperty("--image-bg", "#fff")
       svg.style.setProperty("--text-color", "#000")
-    } else if(backgroundSelect.value === "black") {
+    } else if(color === "black") {
       svg.style.setProperty("--image-bg", "#000")
       svg.style.setProperty("--text-color", "#fff")
     }
@@ -180,7 +182,6 @@ const sketch: Sketch<"webgl2"> = async ({
   cropButton.addEventListener("click", async () => {
     const croppedCanvas = await cropper.result({ type: "rawcanvas", size: "original" });
     const image = croppedCanvas.toDataURL();
-    svg.style.setProperty("--image", `url('${image}'`)
     const newTexture = new TextureLoader().load(image, (texture) => {
       texture.needsUpdate = true;
       uniforms.userImage.value = texture;
@@ -189,8 +190,16 @@ const sketch: Sketch<"webgl2"> = async ({
       }
     });
     cropModal.style.display = "none";
+    svg.style.setProperty("--image", `url(${image})`)
     cropper.destroy();
   });
+
+    const dimensions: Record<string, {width: number, height: number}> = {
+      "square": {width: 2500, height: 2500},
+      "threeByFour": {width: 2500, height: 3333 },
+      "din": {width: 2500, height: 3536},
+      "widescreen": {width: 1920, height: 1080},
+    }
 
   exportButton.addEventListener("click", async () => {
     exportButton.disabled = true;
@@ -199,8 +208,10 @@ const sketch: Sketch<"webgl2"> = async ({
     const tempImage = canvas.toDataURL("image/png")
     canvasContainer.style.background = `url('${tempImage}') center`
     canvasContainer.style.backgroundSize = "contain"
-    const blob = await snapdom.toCanvas(svg, { embedFonts: true, width: 2500 });
-    saveAs(blob.toDataURL("image/png"), `mrmcd_poster_${(new Date()).toLocaleString()}`)
+    const finalDimensions = dimensions[aspectRatioSelect.querySelector("[checked]").value]
+   console.log(svg);
+    
+    const snapdomCanvas = await snapdom.download(svg, { scale: finalDimensions.width / svg.getBoundingClientRect().width, embedFonts: true, reset: "hard", filename: `mrmcd_poster_${(new Date()).toLocaleString()}.png`});
     canvasContainer.style.background = `none`
     // canvasContainer.style.display = "block"
     exportButton.disabled = false;

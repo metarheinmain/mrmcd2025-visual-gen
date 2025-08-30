@@ -3,11 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=djevice-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MRMCD 2025 Visual Gen</title>
     <style>
     :root{
-      --image: url("/placeholder.jpg");
       --text-color: #000;
       --image-bg: #fff;
     }
@@ -26,7 +25,7 @@
       width: 100%;
       height: 100%;
       color: #ccc;
-      background: transparent;
+      background: #444;
     }
 
     .main {
@@ -48,11 +47,17 @@
       margin: 1rem;
       border-radius: 1rem;
       padding: 1rem;
-      background: #222;
+      background: #111;
+    }
+
+    fieldset {
+      border: none;
+      padding: 0
     }
 
     h1,h2,h3,h4 {
-      margin: 0;
+      margin-top: .5rem;
+      margin-bottom: 0;
     }
 
     .imageContainer {
@@ -69,7 +74,7 @@
       max-width: 100dvw;
       margin: 0 auto;
       background: var(--image-bg);
-      border: 2px solid gray;
+      border: 2px solid rgba(128,128,128, 0.2);
     }
 
     .canvasContainer {
@@ -191,7 +196,7 @@
         <select id="texture-select"></select>
         <label for="filename"><h4>Filename</h4></label>
         <input type="text" id="filename" value="mrmcd25.pdf"/>
-        <label for="background">Background</label>
+        <label for="background"><h4>Background</h4></label>
         <fieldset id="background">
           <div><input type="radio" name="background" value="white" id="white" checked />
           <label for="white">White</label></div>
@@ -199,33 +204,33 @@
           <label for="black">Black</label></div>
         </fieldset>
         <div>
-          <label for="slogan">Slogan</label>
+          <label for="slogan"><h4>Slogan</h4></label>
           <input type="checkbox" id="slogan" checked>
         </div>
+        <label for="aspect-ratio"><h4>Aspect Ratio</h4></label>
         <fieldset id="aspect-ratio">
           <div>
             <input type="radio" name="aspect-ratio" value="square" id="square" />
-            <label for="white">Square</label>
+            <label for="square">Square</label>
           </div>
           <div>
-            <input type="radio" name="aspect-ratio" value="threebyFour" id="threebyFour" checked  />
-            <label for="black">3:4</label>
+            <input type="radio" name="aspect-ratio" value="threeByFour" id="threeByFour" checked  />
+            <label for="threeByFour">3:4</label>
           </div>
           <div>
             <input type="radio" name="aspect-ratio" value="din" id="din" />
-            <label for="black">DIN Portrait</label>
+            <label for="din">DIN Portrait</label>
           </div>
           <div>
             <input type="radio" name="aspect-ratio" value="widescreen" id="widescreen" />
-            <label for="black">16:9</label>
+            <label for="wid">16:9</label>
           </div>
         </fieldset>
         <button id="saveImage">Export image</button>
       </div>
       <div class="imageContainer">
-        <svg id="image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 200">
+        <svg id="image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 200" style="--image-bg: #ffffff; --image: url('/placeholder.jpg'); background: var(--image-bg);">
           <style>
-
     @font-face { font-family: "Inter"; font-style: normal; font-weight: 500; font-display: swap; src: url("/Inter-Medium.woff2") format("woff2"); }
           </style>
           <svg x="23" y="20" style="fill: var(--text-color)">

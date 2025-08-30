@@ -13,5 +13,5 @@ void main() {
     vec4 uv = texture2D(uvMap, vUv);
     vec4 refraction = texture2D(userImage, vec2(uv.r * 1.5, uv.g * 1.5));
     vec4 gloss = texture2D(lightingTexture, vUv);
-    gl_FragColor = vec4(blendHardLight(refraction.rgb, gloss.rgb), gloss.a);
+    gl_FragColor = vec4(blendHardLight(refraction.rgb, gloss.rgb) * gloss.a, gloss.a);
 }
