@@ -35,9 +35,9 @@ const sketch: Sketch<"webgl2"> = async ({
   const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
   const scene = new Scene();
 
-  const uvMap = new TextureLoader().load("/uv_book.png");
-  const lightingTexture = new TextureLoader().load("/lighting_book.png");
-  const userImage = new TextureLoader().load("/placeholder.jpg");
+  const uvMap = new TextureLoader().load("uv_book.png");
+  const lightingTexture = new TextureLoader().load("lighting_book.png");
+  const userImage = new TextureLoader().load("placeholder.jpg");
 
   const uploadInput = document.getElementById("upload") as HTMLInputElement;
   const cropModal = document.getElementById("crop-modal") as HTMLDivElement;
@@ -267,14 +267,14 @@ const sketch: Sketch<"webgl2"> = async ({
 
   textureSelect.addEventListener("change", (event) => {
     const setName = (event.target as HTMLSelectElement).value;
-    new TextureLoader().load(`/uv_${setName}.png`, (texture) => {
+    new TextureLoader().load(`uv_${setName}.png`, (texture) => {
       texture.needsUpdate = true;
       uniforms.uvMap.value = texture;
       if (uvMap) {
         uvMap.dispose();
       }
     });
-    new TextureLoader().load(`/lighting_${setName}.png`, (texture) => {
+    new TextureLoader().load(`lighting_${setName}.png`, (texture) => {
       texture.needsUpdate = true;
       uniforms.lightingTexture.value = texture;
       if (lightingTexture) {
