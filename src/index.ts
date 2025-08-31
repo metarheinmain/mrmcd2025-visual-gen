@@ -235,7 +235,7 @@ const sketch: Sketch<"webgl2"> = async ({
       scale: finalDimensions.width / svg.getBoundingClientRect().width,
       embedFonts: true,
       reset: "hard",
-      filename: `mrmcd_poster_${new Date().toLocaleString()}.png`,
+      filename: `mrmcd_poster_${new Date().toLocaleString("de").replace(", ","_")}.png`,
     });
     canvasContainer.style.background = `none`;
     // canvasContainer.style.display = "block"
