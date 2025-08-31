@@ -35,9 +35,9 @@ const sketch: Sketch<"webgl2"> = async ({
   const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
   const scene = new Scene();
 
-  const uvMap = new TextureLoader().load("/uv_book.png");
-  const lightingTexture = new TextureLoader().load("/lighting_book.png");
-  const userImage = new TextureLoader().load("/placeholder.jpg");
+  const uvMap = new TextureLoader().load("uv_book.png");
+  const lightingTexture = new TextureLoader().load("lighting_book.png");
+  const userImage = new TextureLoader().load("placeholder.jpg");
 
   const uploadInput = document.getElementById("upload") as HTMLInputElement;
   const cropModal = document.getElementById("crop-modal") as HTMLDivElement;
@@ -214,7 +214,9 @@ const sketch: Sketch<"webgl2"> = async ({
   };
 
   exportButton.addEventListener("click", async () => {
+    exportButton.textContent = "This might take a while...";
     exportButton.disabled = true;
+
     const canvasContainer = document.querySelector(
       ".canvasContainer",
     ) as HTMLDivElement;
@@ -233,10 +235,11 @@ const sketch: Sketch<"webgl2"> = async ({
       scale: finalDimensions.width / svg.getBoundingClientRect().width,
       embedFonts: true,
       reset: "hard",
-      filename: `mrmcd_poster_${new Date().toLocaleString()}.png`,
+      filename: `mrmcd_poster_${new Date().toLocaleString("de").replace(", ","_")}.png`,
     });
     canvasContainer.style.background = `none`;
     // canvasContainer.style.display = "block"
+    exportButton.textContent = "Export image";
     exportButton.disabled = false;
   });
 
@@ -267,14 +270,14 @@ const sketch: Sketch<"webgl2"> = async ({
 
   textureSelect.addEventListener("change", (event) => {
     const setName = (event.target as HTMLSelectElement).value;
-    new TextureLoader().load(`/uv_${setName}.png`, (texture) => {
+    new TextureLoader().load(`uv_${setName}.png`, (texture) => {
       texture.needsUpdate = true;
       uniforms.uvMap.value = texture;
       if (uvMap) {
         uvMap.dispose();
       }
     });
-    new TextureLoader().load(`/lighting_${setName}.png`, (texture) => {
+    new TextureLoader().load(`lighting_${setName}.png`, (texture) => {
       texture.needsUpdate = true;
       uniforms.lightingTexture.value = texture;
       if (lightingTexture) {

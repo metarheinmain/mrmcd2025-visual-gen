@@ -17,7 +17,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: "./index.html",
-        konfigurator: "./konfigurator/index.html"
+        konfigurator: "./konfigurator.html"
       }
     },
   },
