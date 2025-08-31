@@ -214,7 +214,9 @@ const sketch: Sketch<"webgl2"> = async ({
   };
 
   exportButton.addEventListener("click", async () => {
+    exportButton.textContent = "This might take a while...";
     exportButton.disabled = true;
+
     const canvasContainer = document.querySelector(
       ".canvasContainer",
     ) as HTMLDivElement;
@@ -237,6 +239,7 @@ const sketch: Sketch<"webgl2"> = async ({
     });
     canvasContainer.style.background = `none`;
     // canvasContainer.style.display = "block"
+    exportButton.textContent = "Export image";
     exportButton.disabled = false;
   });
 
